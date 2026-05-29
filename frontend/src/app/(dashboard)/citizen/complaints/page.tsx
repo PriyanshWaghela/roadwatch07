@@ -161,17 +161,17 @@ export default function MyComplaintsPage() {
                         AI Analysis
                       </span>
                       <span className="text-cyan-accent font-bold">
-                        {(complaint.aiAnalysis.confidence * 100).toFixed(1)}% Confidence
+                        {complaint.aiAnalysis.confidence ? (complaint.aiAnalysis.confidence * 100).toFixed(1) : 0}% Confidence
                       </span>
                     </div>
                     <div className="grid grid-cols-2 gap-2 text-xs">
                       <div className="bg-surface-container/50 px-2 py-1.5 rounded text-on-surface">
                         <span className="text-on-surface-variant block mb-0.5">Detected</span>
-                        <span className="font-semibold">{complaint.aiAnalysis.damageType}</span>
+                        <span className="font-semibold">{complaint.aiAnalysis.damageType || 'Unknown'}</span>
                       </div>
                       <div className="bg-surface-container/50 px-2 py-1.5 rounded text-on-surface">
                         <span className="text-on-surface-variant block mb-0.5">Est. Repair</span>
-                        <span className="font-semibold">₹{complaint.aiAnalysis.estimatedRepairCost.toLocaleString('en-IN')}</span>
+                        <span className="font-semibold">₹{complaint.aiAnalysis.estimatedRepairCost ? complaint.aiAnalysis.estimatedRepairCost.toLocaleString('en-IN') : 'N/A'}</span>
                       </div>
                     </div>
                   </div>

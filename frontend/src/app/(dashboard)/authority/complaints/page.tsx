@@ -129,14 +129,14 @@ export default function AuthorityComplaintsPage() {
                             <div className="flex items-center gap-1.5">
                               <span className="w-1.5 h-1.5 rounded-full bg-[#00ffff] animate-pulse" />
                               <span className="text-[#00ffff] text-xs font-bold font-mono">
-                                {(c.aiAnalysis.confidence * 100).toFixed(0)}% CONF
+                                {c.aiAnalysis.confidence ? (c.aiAnalysis.confidence * 100).toFixed(0) : 0}% CONF
                               </span>
                             </div>
                             <div className="text-xs text-on-surface font-mono max-w-[150px] truncate">
-                              {c.aiAnalysis.damageType}
+                              {c.aiAnalysis.damageType || 'Unknown'}
                             </div>
                             <div className="text-xs text-on-surface-variant font-mono">
-                              ₹{c.aiAnalysis.estimatedRepairCost.toLocaleString('en-IN')} Est.
+                              ₹{c.aiAnalysis.estimatedRepairCost ? c.aiAnalysis.estimatedRepairCost.toLocaleString('en-IN') : 'N/A'} Est.
                             </div>
                           </div>
                         ) : (
