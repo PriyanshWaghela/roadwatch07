@@ -131,7 +131,7 @@ export default function SolutionSection() {
       <div className="absolute top-1/3 left-0 w-[400px] h-[400px] bg-cyan-accent/3 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-1/4 right-0 w-[350px] h-[350px] bg-secondary/3 rounded-full blur-[100px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full px-4 sm:px-8 lg:px-16">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

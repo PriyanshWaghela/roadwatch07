@@ -22,7 +22,7 @@ export default function HeroSection() {
       <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-cyan-accent/5 rounded-full blur-[100px] animate-breathe pointer-events-none" style={{ animationDelay: '2s' }} />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-accent/3 rounded-full blur-[150px] pointer-events-none" />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
+      <div className="relative z-10 w-full px-4 sm:px-8 lg:px-16 py-24 lg:py-32">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left Column — Content */}
           <motion.div
