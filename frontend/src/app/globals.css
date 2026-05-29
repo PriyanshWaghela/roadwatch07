@@ -44,6 +44,8 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 body {
@@ -51,6 +53,7 @@ body {
   background: var(--color-background);
   color: var(--color-on-surface);
   overflow-x: hidden;
+  max-width: 100%;
   line-height: 1.6;
 }
 
