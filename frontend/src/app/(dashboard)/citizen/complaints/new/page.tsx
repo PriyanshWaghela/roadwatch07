@@ -119,14 +119,35 @@ export default function SubmitComplaintPage() {
           >
             {previewUrl ? (
               <div className="relative inline-block w-full max-w-sm mx-auto">
-                <img src={previewUrl} alt="Preview" className="w-full h-48 object-cover rounded-lg border border-white/10 shadow-lg" />
-                <button 
-                  type="button" 
-                  onClick={removeFile}
-                  className="absolute -top-3 -right-3 w-8 h-8 bg-error text-white rounded-full flex items-center justify-center hover:scale-110 transition-transform shadow-bloom-error"
-                >
-                  <X size={16} />
-                </button>
+                <div className="relative rounded-lg overflow-hidden border border-white/10 shadow-lg">
+                  <img src={previewUrl} alt="Preview" className="w-full h-48 object-cover" />
+                  
+                  {isSubmitting && (
+                    <div className="absolute inset-0 z-10 bg-[#00ffff]/10 pointer-events-none">
+                      <motion.div 
+                        className="w-full h-[2px] bg-[#00ffff] shadow-[0_0_15px_#00ffff]"
+                        initial={{ y: 0 }}
+                        animate={{ y: 192 }}
+                        transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center backdrop-blur-[2px]">
+                        <span className="bg-black/80 text-[#00ffff] px-3 py-1 rounded font-mono text-xs font-bold border border-[#00ffff]/30 animate-pulse">
+                          AI COMPUTER VISION SCANNING...
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+                
+                {!isSubmitting && (
+                  <button 
+                    type="button" 
+                    onClick={removeFile}
+                    className="absolute -top-3 -right-3 w-8 h-8 bg-error text-white rounded-full flex items-center justify-center hover:scale-110 transition-transform shadow-bloom-error z-20"
+                  >
+                    <X size={16} />
+                  </button>
+                )}
               </div>
             ) : (
               <>

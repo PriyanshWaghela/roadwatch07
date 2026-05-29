@@ -89,6 +89,7 @@ export default function AuthorityComplaintsPage() {
                   <th className="p-4 font-medium">Issue</th>
                   <th className="p-4 font-medium">Location</th>
                   <th className="p-4 font-medium">Severity</th>
+                  <th className="p-4 font-medium">AI Insights</th>
                   <th className="p-4 font-medium">Status</th>
                   <th className="p-4 font-medium text-right">Actions</th>
                 </tr>
@@ -96,7 +97,7 @@ export default function AuthorityComplaintsPage() {
               <tbody className="divide-y divide-white/5">
                 {filteredComplaints.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="p-8 text-center text-on-surface-variant font-mono">No complaints match your criteria.</td>
+                    <td colSpan={7} className="p-8 text-center text-on-surface-variant font-mono">No complaints match your criteria.</td>
                   </tr>
                 ) : (
                   filteredComplaints.map((c: any) => (
@@ -121,6 +122,26 @@ export default function AuthorityComplaintsPage() {
                           {c.severity === 'critical' && <AlertOctagon size={12} />}
                           {c.severity}
                         </div>
+                      </td>
+                      <td className="p-4">
+                        {c.aiAnalysis ? (
+                          <div className="space-y-1">
+                            <div className="flex items-center gap-1.5">
+                              <span className="w-1.5 h-1.5 rounded-full bg-[#00ffff] animate-pulse" />
+                              <span className="text-[#00ffff] text-xs font-bold font-mono">
+                                {(c.aiAnalysis.confidence * 100).toFixed(0)}% CONF
+                              </span>
+                            </div>
+                            <div className="text-xs text-on-surface font-mono max-w-[150px] truncate">
+                              {c.aiAnalysis.damageType}
+                            </div>
+                            <div className="text-xs text-on-surface-variant font-mono">
+                              ₹{c.aiAnalysis.estimatedRepairCost.toLocaleString('en-IN')} Est.
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="text-xs text-on-surface-variant font-mono italic">No AI Data</div>
+                        )}
                       </td>
                       <td className="p-4">
                         <select 

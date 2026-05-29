@@ -91,43 +91,93 @@ export default function MyComplaintsPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.05 }}
-              className="glass-card rounded-xl overflow-hidden group border border-white/5 hover:border-cyan-accent/30 transition-colors"
+              className="glass-card rounded-xl overflow-hidden group border border-white/5 hover:border-cyan-accent/30 transition-colors flex flex-col"
             >
-              <div className="h-48 bg-surface-bright relative overflow-hidden">
+              <div className="h-56 bg-surface-bright relative overflow-hidden">
                 {complaint.images && complaint.images.length > 0 ? (
-                  <img 
-                    src={complaint.images[0].url.startsWith('http') ? complaint.images[0].url : `http://localhost:5000${complaint.images[0].url}`} 
-                    alt="Damage" 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                  />
+                  <>
+                    <img 
+                      src={complaint.images[0].url.startsWith('http') ? complaint.images[0].url : `http://localhost:5000${complaint.images[0].url}`} 
+                      alt="Damage" 
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                    />
+                    {/* Render AI Bounding Boxes */}
+                    {complaint.aiAnalysis?.boundingBoxes?.map((box: any, idx: number) => (
+                      <div 
+                        key={idx}
+                        className="absolute border-2 border-cyan-accent bg-cyan-accent/10 shadow-[0_0_10px_rgba(0,255,255,0.5)] z-10 pointer-events-none"
+                        style={{
+                          left: `${Math.min(90, (box.x / 500) * 100)}%`,
+                          top: `${Math.min(90, (box.y / 500) * 100)}%`,
+                          width: `${Math.min(90, (box.w / 500) * 100)}%`,
+                          height: `${Math.min(90, (box.h / 500) * 100)}%`,
+                        }}
+                      >
+                        <div className="absolute -top-5 left-[-2px] bg-cyan-accent text-black text-[10px] font-bold px-1 whitespace-nowrap">
+                          {box.label || 'Damage'} ({(box.confidence * 100).toFixed(0)}%)
+                        </div>
+                      </div>
+                    ))}
+                  </>
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-on-surface-variant">
                     <AlertTriangle size={32} opacity={0.5} />
                   </div>
                 )}
-                <div className="absolute top-3 right-3">
-                  <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest backdrop-blur-md ${
-                    complaint.status === 'resolved' ? 'bg-secondary/80 text-black' : 
-                    complaint.status === 'in_progress' ? 'bg-tertiary/80 text-black' : 
-                    'bg-cyan-accent/80 text-black'
+                
+                {/* Status Badge */}
+                <div className="absolute top-3 right-3 z-20">
+                  <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest backdrop-blur-md shadow-lg ${
+                    complaint.status === 'resolved' ? 'bg-secondary/90 text-black' : 
+                    complaint.status === 'in_progress' ? 'bg-tertiary/90 text-black' : 
+                    'bg-cyan-accent/90 text-black'
                   }`}>
                     {complaint.status.replace('_', ' ')}
                   </span>
                 </div>
               </div>
-              <div className="p-5 space-y-3">
-                <div className="flex justify-between items-start gap-2">
-                  <h3 className="font-bold text-on-surface line-clamp-1">{complaint.title}</h3>
-                  <span className={`text-xs font-mono px-2 py-0.5 rounded border ${
-                    complaint.severity === 'critical' ? 'border-error text-error bg-error/10' :
-                    complaint.severity === 'high' ? 'border-tertiary text-tertiary bg-tertiary/10' :
-                    'border-secondary text-secondary bg-secondary/10'
-                  }`}>
-                    {complaint.severity}
-                  </span>
+
+              <div className="p-5 flex flex-col flex-grow space-y-4">
+                <div>
+                  <div className="flex justify-between items-start gap-2 mb-2">
+                    <h3 className="font-bold text-on-surface line-clamp-1">{complaint.title}</h3>
+                    <span className={`text-xs font-mono px-2 py-0.5 rounded border ${
+                      complaint.severity === 'critical' ? 'border-error text-error bg-error/10' :
+                      complaint.severity === 'high' ? 'border-tertiary text-tertiary bg-tertiary/10' :
+                      'border-secondary text-secondary bg-secondary/10'
+                    }`}>
+                      {complaint.severity}
+                    </span>
+                  </div>
+                  <p className="text-sm font-mono text-on-surface-variant line-clamp-2">{complaint.description}</p>
                 </div>
-                <p className="text-sm font-mono text-on-surface-variant line-clamp-2">{complaint.description}</p>
-                <div className="pt-4 mt-4 border-t border-white/5 flex items-center justify-between text-xs font-mono text-on-surface-variant">
+
+                {/* AI Insights Section */}
+                {complaint.aiAnalysis && (
+                  <div className="mt-auto bg-surface-container-lowest/50 border border-white/5 rounded-lg p-3 space-y-2">
+                    <div className="flex items-center justify-between text-xs font-mono">
+                      <span className="text-on-surface-variant uppercase tracking-wider flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-cyan-accent animate-pulse" />
+                        AI Analysis
+                      </span>
+                      <span className="text-cyan-accent font-bold">
+                        {(complaint.aiAnalysis.confidence * 100).toFixed(1)}% Confidence
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 text-xs">
+                      <div className="bg-surface-container/50 px-2 py-1.5 rounded text-on-surface">
+                        <span className="text-on-surface-variant block mb-0.5">Detected</span>
+                        <span className="font-semibold">{complaint.aiAnalysis.damageType}</span>
+                      </div>
+                      <div className="bg-surface-container/50 px-2 py-1.5 rounded text-on-surface">
+                        <span className="text-on-surface-variant block mb-0.5">Est. Repair</span>
+                        <span className="font-semibold">₹{complaint.aiAnalysis.estimatedRepairCost.toLocaleString('en-IN')}</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                <div className="pt-2 border-t border-white/5 flex items-center justify-between text-[11px] font-mono text-on-surface-variant">
                   <span>{new Date(complaint.createdAt).toLocaleDateString()}</span>
                   <span className="truncate max-w-[150px]">{complaint.location?.address}</span>
                 </div>
